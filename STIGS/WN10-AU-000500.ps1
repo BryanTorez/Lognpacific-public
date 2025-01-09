@@ -25,7 +25,7 @@
     PS C:\> .\STIG-ID-WN10-AU-000500.ps1 
 #>
 
-# # Define the registry key path
+# Define the registry key path
 $RegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application"
 
 # Define the registry value name and data
