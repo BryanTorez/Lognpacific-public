@@ -26,24 +26,20 @@
 #>
 
 # Define the registry path and key details
-$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application"
-$keyName = "MaxSize"
-$keyValue = 0x00008000  # Hexadecimal value as DWORD
+$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
+$propertyName = "AllowDomainPINLogon"
+$propertyValue = 0
 
-# Check if the registry path exists, if not, create it
+# Ensure the registry path exists, create it if it doesn't
 if (-not (Test-Path $registryPath)) {
     New-Item -Path $registryPath -Force | Out-Null
 }
 
 # Set the registry key value
-Set-ItemProperty -Path $registryPath -Name $keyName -Value $keyValue -Type DWord
+Set-ItemProperty -Path $registryPath -Name $propertyName -Value $propertyValue -PropertyType DWord
 
 # Verify the change
-if ((Get-ItemProperty -Path $registryPath).$keyName -eq $keyValue) {
-    Write-Host "Registry key set successfully."
-} else {
-    Write-Host "Failed to set the registry key."
-}
+Get-ItemProperty -Path $registryPath -Name $propertyName
 
 
 #>
