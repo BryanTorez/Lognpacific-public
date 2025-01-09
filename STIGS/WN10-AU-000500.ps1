@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Camera access from the lock screen must be disabled.
+    This Powershell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
 
 .NOTES
     Author          : Bryan Torres
@@ -11,7 +11,7 @@
     Version         : 1.0
     CVEs            : N/A
     Plugin IDs      : N/A
-    STIG-ID         : WN10-CC-000005
+    STIG-ID         : WN10-AU-000500
 
 .TESTED ON
     Date(s) Tested  : 
@@ -22,19 +22,22 @@
 .USAGE
     Put any usage instructions here.
     Example syntax:
-    PS C:\> .\STIG-ID-WN10-CC-000005.ps1 
+    PS C:\> .\STIG-ID-WN10-AU-000500.ps1 
 #>
 
-# Path to the registry key
-$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization"
+# Define the registry path
+$RegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application"
 
-# Check if the registry key exists, create it if not
-if (-not (Test-Path $RegPath)) {
-    New-Item -Path $RegPath -Force
+# Ensure the parent keys exist
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
 }
 
-# Set the "NoLockScreenCamera" value
-Set-ItemProperty -Path $RegPath -Name "NoLockScreenCamera" -Value 1 -PropertyType DWord
+# Set the MaxSize value
+$PropertyName = "MaxSize"
+$PropertyValue = 0x8000 # 32768 in decimal
+
+New-ItemProperty -Path $RegistryPath -Name $PropertyName -Value $PropertyValue -PropertyType DWord -Force
 
 #>
 
