@@ -1,0 +1,43 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that Solicited Remote Assistance must not be allowed.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000155
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000155
+#>
+# Define the registry path and value
+$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+$valueName = "fAllowToGetHelp"
+$valueData = 0
+
+# Check if the registry path exists, create it if not
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $registryPath -Name $valueName -Value $valueData -Type DWord
+
+# Confirm the change
+Write-Output "Registry value $valueName set to $valueData at $registryPath"
+
+#>
