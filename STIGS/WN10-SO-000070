@@ -1,0 +1,43 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that the machine inactivity limit must be set to 15 minutes, locking the system with the screensaver.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-SO-000070
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-SO-000070.ps1 
+#>
+# Define the registry path and value
+$RegistryPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+$ValueName = "InactivityTimeoutSecs"
+$ValueData = 0x00000384 # Hexadecimal equivalent of 900 seconds (decimal 900)
+
+# Ensure the registry path exists
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $RegistryPath -Name $ValueName -Value $ValueData
+
+# Confirm the change
+Write-Output "Registry value $ValueName set to $ValueData under $RegistryPath"
+
+#>
