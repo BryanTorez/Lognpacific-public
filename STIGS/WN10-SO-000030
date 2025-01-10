@@ -24,6 +24,20 @@
     Example syntax:
     PS C:\> .\STIG-ID-WN10-SO-000030.ps1 
 #>
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa]
-"SCENoApplyLegacyAuditPolicy"=dword:00000001
+# Define the registry path and value
+$registryPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa"
+$valueName = "SCENoApplyLegacyAuditPolicy"
+$valueData = 1
+
+# Check if the registry key exists; if not, create it
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force
+}
+
+# Set the registry value
+Set-ItemProperty -Path $registryPath -Name $valueName -Value $valueData -Type DWord
+
+# Confirm the change
+Write-Output "Registry key '$registryPath' updated with '$valueName' set to '$valueData'."
+
 #>
