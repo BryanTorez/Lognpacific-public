@@ -1,0 +1,42 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures the Application Compatibility Program Inventory must be prevented from collecting data and sending the information to Microsoft.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000175
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000175.ps1 
+#>
+# Define the registry path and key
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat"
+$regName = "DisableInventory"
+$regValue = 1
+
+# Check if the registry path exists, and create it if it doesn't
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force
+}
+
+# Set the registry key value
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+Write-Host "Registry key set successfully."
+
+#>
