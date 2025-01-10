@@ -1,0 +1,42 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that The Windows Remote Management (WinRM) service must not store RunAs credentials.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000355
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000355
+#>
+# Define the registry path and value
+$RegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service"
+$ValueName = "DisableRunAs"
+$ValueData = 1
+
+# Ensure the registry path exists
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $RegistryPath -Name $ValueName -Value $ValueData -Type DWord
+
+Write-Host "Registry value $ValueName set to $ValueData in $RegistryPath"
+
+#>
