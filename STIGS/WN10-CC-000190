@@ -1,0 +1,51 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that autoplay must be disabled for all drives.
+
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000190
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000190
+#>
+# Run PowerShell as Administrator for the script to work
+# Define the registry path
+$registryPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+
+# Define the registry value name and data
+$valueName = "NoDriveTypeAutoRun"
+$valueData = 0xFF
+
+# Ensure the registry path exists; create it if necessary
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $registryPath -Name $valueName -Value $valueData -Type DWord
+
+# Confirm the change
+if ((Get-ItemProperty -Path $registryPath).$valueName -eq $valueData) {
+    Write-Output "Registry value '$valueName' successfully set to $valueData."
+} else {
+    Write-Output "Failed to set registry value '$valueName'."
+}
+
+#>
