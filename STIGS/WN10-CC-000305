@@ -1,0 +1,43 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that Indexing of encrypted files must be turned off.
+
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000305
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000305
+#>
+# Define the registry key path and value name
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"
+$regName = "AllowIndexingEncryptedStoresOrItems"
+$regValue = 0
+
+# Check if the registry key exists, create it if it doesn't
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+Write-Host "Registry value for '$regName' set to $regValue in '$regPath'."
+
+#>
