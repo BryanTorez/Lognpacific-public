@@ -1,0 +1,43 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that Passwords must not be saved in the Remote Desktop Client.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000270
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000270 
+#>
+# Define the registry path and value name
+$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+$valueName = "DisablePasswordSaving"
+$valueData = 1
+
+# Check if the registry key exists, create it if not
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $registryPath -Name $valueName -Value $valueData -Type DWord
+
+# Confirm the action
+Write-Host "Registry value 'DisablePasswordSaving' set to 1 under $registryPath."
+
+#>
