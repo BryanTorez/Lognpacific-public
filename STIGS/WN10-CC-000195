@@ -1,1 +1,42 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that enhanced anti-spoofing for facial recognition must be enabled on Window 10.
 
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000195
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000195
+#>
+# Define the registry path and value
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics\FacialFeatures"
+$valueName = "EnhancedAntiSpoofing"
+$valueData = 1
+
+# Check if the registry path exists, if not, create it
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $regPath -Name $valueName -Value $valueData -Type DWord
+
+Write-Host "Registry key and value have been successfully configured."
+
+#>
