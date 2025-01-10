@@ -1,0 +1,43 @@
+<#
+.SYNOPSIS
+    This Powershell script ensures that users must be prevented from changing installation options.
+
+.NOTES
+    Author          : Bryan Torres
+    LinkedIn        : www.linkedin.com/in/mystryzz
+    GitHub          : https://github.com/BryanTorez
+    Date Created    : 2025-01-09
+    Last Modified   : 2025-01-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000310
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\STIG-ID-WN10-CC-000310 
+#>
+# Define the registry path and value
+$RegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer"
+$PropertyName = "EnableUserControl"
+$PropertyValue = 0
+
+# Check if the registry key exists, create it if it doesn't
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $RegistryPath -Name $PropertyName -Value $PropertyValue -Type DWord
+
+# Output success message
+Write-Host "Registry value successfully set: $RegistryPath\$PropertyName = $PropertyValue" -ForegroundColor Green
+
+#>
